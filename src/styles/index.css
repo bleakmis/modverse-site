@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Color system (RGB channels so Tailwind alpha works) ---------- */
+:root {
+  --c-bg: 247 246 255;
+  --c-surface: 255 255 255;
+  --c-ink: 20 16 40;
+  --c-muted: 91 84 120;
+  --c-line: 20 16 40;
+  --c-neon: 8 145 178;
+  --c-teal: 13 148 136;
+  --c-violet: 109 40 217;
+}
+.dark {
+  --c-bg: 7 6 15;
+  --c-surface: 20 16 40;
+  --c-ink: 236 233 255;
+  --c-muted: 164 158 196;
+  --c-line: 255 255 255;
+  --c-neon: 34 211 238;
+  --c-teal: 45 212 191;
+  --c-violet: 139 92 246;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+html:not(.dark) {
+  color-scheme: light;
+}
+body {
+  @apply bg-bg font-sans text-ink antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+::selection {
+  background: rgb(var(--c-violet) / 0.45);
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid rgb(var(--c-neon));
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* Inputs sit inside containers that already show a focus ring (focus-within). */
+input:focus-visible {
+  outline: none;
+}
+
+@layer components {
+  .glass {
+    @apply border border-line/10 bg-surface/60 backdrop-blur-xl;
+  }
+  .glass-strong {
+    @apply border border-line/15 bg-surface/80 backdrop-blur-2xl;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-neon via-teal to-violet bg-clip-text text-transparent;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold tracking-wide transition duration-300;
+  }
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-neon to-violet text-white shadow-glow hover:-translate-y-0.5 hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply btn glass text-ink hover:-translate-y-0.5 hover:border-neon/60 hover:text-neon;
+  }
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .section {
+    @apply py-16 sm:py-24;
+  }
+}
+
+/* Animated grid / aurora backdrop used behind the hero (3D scene mounts here in Stage 2) */
+.aurora {
+  background:
+    radial-gradient(60% 50% at 20% 20%, rgb(var(--c-violet) / 0.35), transparent 70%),
+    radial-gradient(50% 45% at 80% 30%, rgb(var(--c-neon) / 0.28), transparent 70%),
+    radial-gradient(60% 50% at 50% 90%, rgb(var(--c-teal) / 0.18), transparent 70%);
+}
+.grid-lines {
+  background-image:
+    linear-gradient(rgb(var(--c-line) / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--c-line) / 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
